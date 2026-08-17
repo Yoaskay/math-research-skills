@@ -12,8 +12,9 @@ Explain the decisive idea in one proof as if the paper's author were giving a fi
 1. Use an explicitly requested output language.
 2. Otherwise, use the language of the user's request.
 3. Default to English when the request does not establish a language. Do not infer the output language from the paper.
-4. Focus on one theorem, proposition, lemma, or corollary. Do not turn the response into a whole-paper summary or a line-by-line proof rewrite.
-5. Treat correctness review, formalization, and reconstruction of omitted proofs as separate tasks unless the user explicitly requests them.
+4. Use established mathematical terminology in the output language. If no standard translation is known with confidence, retain the original term or give it in parentheses; never invent a literal translation.
+5. Focus on one theorem, proposition, lemma, or corollary. Do not turn the response into a whole-paper summary or a line-by-line proof rewrite.
+6. Treat correctness review, formalization, and reconstruction of omitted proofs as separate tasks unless the user explicitly requests them.
 
 ## Resolve the target result
 
