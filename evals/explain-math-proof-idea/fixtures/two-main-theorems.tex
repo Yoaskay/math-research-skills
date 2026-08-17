@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+
+\title{Two Independent Finiteness Principles}
+\author{Synthetic Evaluation Fixture}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove two co-primary results. Theorem~\ref{th:tree} characterizes finite trees by their edge count, while Theorem~\ref{th:linear-extension} constructs a linear extension of every finite partially ordered set. Neither result is a corollary of the other.
+\end{abstract}
+
+\section{Introduction}
+
+Theorem~\ref{th:tree} and Theorem~\ref{th:linear-extension} are the two main theorems of this note. They illustrate independent uses of induction: removal of a leaf and removal of a minimal element, respectively.
+
+\begin{theorem}\label{th:tree}
+A finite connected graph on $n$ vertices is a tree if and only if it has $n-1$ edges.
+\end{theorem}
+
+\begin{proof}
+For a tree, remove a leaf and apply induction. Conversely, if a connected graph with $n-1$ edges contained a cycle, deleting one edge of the cycle would leave a connected graph with fewer than $n-1$ edges, contradicting the inductive lower bound for connected graphs.
+\end{proof}
+
+\begin{theorem}\label{th:linear-extension}
+Every finite partially ordered set admits a linear extension.
+\end{theorem}
+
+\begin{proof}
+Choose a minimal element, place it first, and apply induction to the induced partial order on the remaining elements. Minimality ensures that adding the chosen element at the beginning preserves every required comparison.
+\end{proof}
+
+\end{document}

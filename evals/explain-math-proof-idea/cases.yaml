@@ -1,0 +1,111 @@
+version: 1
+skill: explain-math-proof-idea
+
+cases:
+  - id: explicit-huh-theorem-3
+    should_trigger: true
+    source:
+      type: arxiv
+      url: "https://arxiv.org/abs/1008.4749"
+      title: "Milnor numbers of projective hypersurfaces and the chromatic polynomial of graphs"
+    prompt: "Explain the core proof idea of Theorem 3."
+    expected:
+      - "Resolve Theorem 3 as the introduction's characteristic-polynomial log-concavity result."
+      - "Trace the proof through the formal results used later in the paper rather than treating the introduction statement as a self-contained proof."
+      - "Separate the geometric interpretation and log-concavity mechanism from representability and field-reduction details."
+      - "Give verified source pointers and distinguish the introduction statement from its later formal corollary."
+    forbidden:
+      - "Attribute later Hodge-theoretic proofs for arbitrary matroids to this paper."
+      - "Claim that a proof follows immediately from the introduction statement."
+
+  - id: semantic-main-theorem-ellenberg-gijswijt
+    should_trigger: true
+    source:
+      type: arxiv
+      url: "https://arxiv.org/abs/1605.09223"
+      title: "On large subsets of F_q^n with no three-term arithmetic progression"
+    prompt: "この論文の主定理の証明のコアアイデアを説明してください。"
+    expected:
+      - "Identify the formal theorem with TeX label th:main as the unique main theorem and briefly justify that choice."
+      - "Explain the low-degree polynomial construction, the rank bound from separating monomials, and the maximal-support dimension argument."
+      - "Use Japanese because the request is in Japanese."
+      - "Avoid presenting later slice-rank terminology as terminology used by the authors."
+    forbidden:
+      - "Give only a history of the cap-set problem."
+      - "Describe every proof line without isolating the decisive mechanism."
+
+  - id: user-supplied-result
+    should_trigger: true
+    source:
+      type: user-provided
+      required_formats:
+        - "PDF or arXiv URL"
+      preferred_formats:
+        - "TeX source"
+    prompt: "Explain the core proof idea of the theorem, proposition, or lemma selected by the user."
+    expected:
+      - "Resolve the result against the exact version the user is reading."
+      - "Obtain expert feedback on whether the explanation captures the actual decisive idea."
+      - "Record corrections as a future eval without committing the paper itself."
+    status: "pending-user-artifact"
+
+  - id: ambiguous-main-results
+    should_trigger: true
+    source:
+      type: local-fixture
+      path: "fixtures/two-main-theorems.tex"
+    prompt: "Explain the main theorem of this paper."
+    expected:
+      - "List Theorem 1 and Theorem 2 as co-primary candidates with one-sentence statements."
+      - "Ask the user to select one before explaining either proof."
+    forbidden:
+      - "Choose the first theorem merely because it appears first."
+      - "Explain both proofs without clarification."
+
+  - id: proof-delegated-to-external-source
+    should_trigger: true
+    source:
+      type: local-fixture
+      path: "fixtures/external-proof.tex"
+    prompt: "Explain the core proof idea of Theorem 1 using this paper."
+    expected:
+      - "State that the proof is not present in the supplied paper."
+      - "Explain only the reduction and role documented in the fixture."
+      - "Name the external dependency without inventing its argument."
+    forbidden:
+      - "Reconstruct a proof of the imported theorem."
+
+  - id: source-pdf-version-mismatch
+    should_trigger: true
+    source:
+      type: local-fixture-pair
+      pdf_source_to_compile: "fixtures/version-mismatch-v1.tex"
+      tex_source: "fixtures/version-mismatch-v2.tex"
+    prompt: "Theorem 1 in the PDFの証明のコアアイデアを説明して。TeX sourceも使ってよい。"
+    expected:
+      - "Detect that label th:stability is Theorem 1 in the PDF version and Theorem 2 in the TeX version."
+      - "Use the user's PDF number while reporting the version mismatch."
+      - "Answer in Japanese."
+    forbidden:
+      - "Silently call the target Theorem 2."
+
+  - id: explicit-language-override
+    should_trigger: true
+    source:
+      type: local-fixture
+      path: "fixtures/two-main-theorems.tex"
+    prompt: "Theorem 1の証明のコアアイデアを英語で説明して。"
+    expected:
+      - "Answer in English because the explicit language request overrides the prompt's surrounding language."
+
+  - id: negative-whole-paper-summary
+    should_trigger: false
+    prompt: "Summarize this entire paper section by section."
+
+  - id: negative-latex-debugging
+    should_trigger: false
+    prompt: "Fix the undefined control sequence in this TeX file."
+
+  - id: negative-general-math
+    should_trigger: false
+    prompt: "What is a Noetherian ring?"

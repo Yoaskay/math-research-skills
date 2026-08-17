@@ -1,0 +1,4 @@
+interface:
+  display_name: "Explain Math Proof Idea"
+  short_description: "Explain the core idea behind a math proof"
+  default_prompt: "Use $explain-math-proof-idea to explain the core proof idea of the specified result in this paper."

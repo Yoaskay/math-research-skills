@@ -1,0 +1,20 @@
+\documentclass{article}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+
+\title{A Stability Argument, Version 1}
+\author{Synthetic Evaluation Fixture}
+
+\begin{document}
+\maketitle
+
+\begin{theorem}\label{th:stability}
+If $T$ is a contraction on a complete metric space, then its fixed point is unique.
+\end{theorem}
+
+\begin{proof}
+If $x$ and $y$ are fixed, then $d(x,y)=d(Tx,Ty)\leq c d(x,y)$ for some $c<1$. Hence $d(x,y)=0$.
+\end{proof}
+
+\end{document}
