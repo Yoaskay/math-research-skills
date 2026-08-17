@@ -34,6 +34,26 @@ When several results are genuinely co-primary, the skill lists the candidates an
 
 For personal installation after this repository is published, ask `$skill-installer` to install `.agents/skills/explain-math-proof-idea` from the GitHub repository URL. Codex can install skills from other repositories as described in the [official OpenAI documentation](https://learn.chatgpt.com/docs/build-skills).
 
+### Local development installation
+
+During local development, keep this repository as the source of truth and expose the skill globally with a symbolic link rather than copying it. From the repository root, run:
+
+```bash
+mkdir -p "$HOME/.agents/skills"
+ln -s \
+  "$PWD/.agents/skills/explain-math-proof-idea" \
+  "$HOME/.agents/skills/explain-math-proof-idea"
+```
+
+The global entry is a symbolic link, not a second copy. Changes made in this repository are therefore visible through the global skill path. Verify the link and inspect its target with:
+
+```bash
+ls -l "$HOME/.agents/skills/explain-math-proof-idea"
+readlink "$HOME/.agents/skills/explain-math-proof-idea"
+```
+
+If the destination already exists, `ln` exits with an error instead of overwriting it.
+
 ## Source handling
 
 The skill prefers TeX source from the same version for labels and proof dependencies, while using the PDF version the user is reading for displayed theorem numbers, pages, and equations. It reports version mismatches rather than silently combining sources.
