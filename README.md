@@ -2,11 +2,15 @@
 
 Reusable Codex skills for mathematical research workflows.
 
-## Learn Math Interactively
+## Skills
+
+### Learn Math Interactively
 
 `$learn-math-interactively` develops a serious understanding of a mathematical definition, theorem, proof, or theory through a paced dialogue. It explains one coherent conceptual unit, stops at a natural boundary, and waits for the user's question or explicit approval before continuing.
 
 The skill supports direct mathematical questions as well as passages identified in PDFs, arXiv papers, TeX sources, and textbooks. It infers the user's background from the conversation instead of starting with a questionnaire, and revises both the explanation level and route when later questions expose missing prerequisites or misconceptions.
+
+#### Usage
 
 Invoke it explicitly when you want an interactive explanation:
 
@@ -23,7 +27,7 @@ At each pause:
 
 Dialogue responses follow the language of the user message being answered. If the user switches languages, the skill switches with them. Chat summaries use the user's current language, while TeX and PDF prose is always English.
 
-## Explain Math Proof Idea
+### Explain Math Proof Idea
 
 `$explain-math-proof-idea` explains the decisive idea in the proof of one theorem, proposition, lemma, or corollary from a mathematical research paper. It is designed to sound like a focused five-to-ten-minute explanation from the author to another specialist.
 
@@ -37,9 +41,7 @@ The skill supports:
 
 It does not perform whole-paper summaries, full formal proof verification, LaTeX debugging, or copyediting.
 
-## Use
-
-Open this repository in Codex. The repository-scoped skills under `.agents/skills` are discovered automatically.
+#### Usage
 
 Invoke it explicitly when desired:
 
@@ -53,7 +55,16 @@ Explain the core proof idea of the main theorem in this paper.
 
 When several results are genuinely co-primary, the skill lists the candidates and asks you to select one before explaining a proof.
 
-For personal installation after this repository is published, ask `$skill-installer` to install `.agents/skills/explain-math-proof-idea` from the GitHub repository URL. Codex can install skills from other repositories as described in the [official OpenAI documentation](https://learn.chatgpt.com/docs/build-skills).
+## Installation
+
+Open this repository in Codex to make both repository-scoped skills under `.agents/skills` available automatically.
+
+For personal installation after this repository is published, ask `$skill-installer` to install one or both skill directories from the GitHub repository URL:
+
+- `.agents/skills/learn-math-interactively`
+- `.agents/skills/explain-math-proof-idea`
+
+Codex can install skills from other repositories as described in the [official OpenAI documentation](https://learn.chatgpt.com/docs/build-skills).
 
 ### Local development installation
 
@@ -82,17 +93,19 @@ If the destination already exists, `ln` exits with an error instead of overwriti
 
 ## Source handling
 
-The skill prefers TeX source from the same version for labels and proof dependencies, while using the PDF version the user is reading for displayed theorem numbers, pages, and equations. It reports version mismatches rather than silently combining sources.
+`$explain-math-proof-idea` prefers TeX source from the same version for labels and proof dependencies, while using the PDF version the user is reading for displayed theorem numbers, pages, and equations. It reports version mismatches rather than silently combining sources.
 
 Papers and TeX sources used for evaluation are downloaded temporarily and are not redistributed in this repository. The public evaluation suite stores only arXiv identifiers, prompts, synthetic fixtures, and expected behavior.
 
 ## Evaluate
 
-Evaluation cases and scoring rubrics are in [`evals/explain-math-proof-idea`](evals/explain-math-proof-idea) and [`evals/learn-math-interactively`](evals/learn-math-interactively). The interactive suite covers pacing, question-first behavior, level and language adaptation, corrections, source fidelity, chat-note synthesis, English TeX/PDF export, and negative trigger cases.
+Evaluation cases and scoring rubrics are in [`evals/explain-math-proof-idea`](evals/explain-math-proof-idea) and [`evals/learn-math-interactively`](evals/learn-math-interactively). The proof-idea suite covers target resolution, proof tracing, source-version handling, language selection, and negative triggers. The interactive suite covers pacing, question-first behavior, level and language adaptation, corrections, source fidelity, chat-note synthesis, English TeX/PDF export, and negative triggers.
 
 Validate each skill structure with the `quick_validate.py` script bundled with OpenAI's `skill-creator`, passing the relevant directory under `.agents/skills` as the skill path.
 
 ## Known limitations
+
+### Explain Math Proof Idea
 
 - Accurate page and displayed-number references require the PDF version the user is reading.
 - TeX-first analysis requires source from the same version; otherwise the skill reports the mismatch.
