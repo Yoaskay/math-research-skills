@@ -39,19 +39,39 @@ skill_target="$HOME/.agents/skills"
 mkdir -p "$skill_target"
 for skill_dir in "$repo_root"/.agents/skills/*; do
   [ -d "$skill_dir" ] || continue
+
   skill_name=$(basename "$skill_dir")
-  ln -s "$skill_dir" "$skill_target/$skill_name"
+  destination="$skill_target/$skill_name"
+
+  if [ -L "$destination" ]; then
+    printf 'skip: symbolic link already exists: %s\n' "$destination"
+    continue
+  fi
+
+  if [ -e "$destination" ]; then
+    printf 'skip: destination already exists: %s\n' "$destination" >&2
+    continue
+  fi
+
+  ln -s "$skill_dir" "$destination"
 done
 ```
 
-The loop automatically includes skills added later. Existing destinations are not overwritten: `ln` reports an error for those entries. Inspect the links with:
+The loop automatically includes skills added later. It reports and skips any existing symbolic link, file, or directory instead of following or overwriting it. Inspect the links with:
 
 ```bash
 for skill_dir in "$repo_root"/.agents/skills/*; do
   [ -d "$skill_dir" ] || continue
+
   skill_name=$(basename "$skill_dir")
-  ls -ld "$skill_target/$skill_name"
-  readlink "$skill_target/$skill_name"
+  destination="$skill_target/$skill_name"
+
+  if [ -L "$destination" ]; then
+    ls -ld "$destination"
+    readlink "$destination"
+  else
+    printf 'not linked: %s\n' "$destination" >&2
+  fi
 done
 ```
 
