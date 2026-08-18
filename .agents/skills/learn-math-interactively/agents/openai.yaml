@@ -1,0 +1,4 @@
+interface:
+  display_name: "Learn Math Interactively"
+  short_description: "Learn math deeply through guided dialogue"
+  default_prompt: "Use $learn-math-interactively to help me understand this mathematical topic step by step, pausing for my questions."

@@ -1,0 +1,161 @@
+version: 1
+skill: learn-math-interactively
+
+interaction_contract:
+  assistant_turns_are_evaluated_in_sequence: true
+  approval_advances_at_most_one_unit: true
+  questions_block_mainline_progress: true
+
+cases:
+  - id: first-turn-pacing-japanese
+    should_trigger: true
+    turns:
+      - user: "多様体と微分形式は知っています。Stokesの定理を、なぜ境界上の積分が内部の外微分で表せるのかというところから本格的に理解したい。"
+        expected:
+          - "Answer in Japanese."
+          - "Infer that basic manifold and differential-form language may be used without an intake questionnaire."
+          - "Explain only one coherent starting unit and stop at a natural dependency boundary."
+          - "Invite questions or an explicit OK without administering a quiz."
+        forbidden:
+          - "Give a comprehensive proof of Stokes' theorem in the first turn."
+          - "Continue through partitions of unity, orientation, local reduction, and the Euclidean theorem in one response."
+
+  - id: approval-advances-one-unit
+    should_trigger: true
+    history:
+      - role: user
+        content: "Help me understand why compactness matters in the extreme value theorem, step by step."
+      - role: assistant
+        content: "The first unit explained compactness as the property that prevents maximizing sequences from escaping, then paused."
+    turns:
+      - user: "OK"
+        expected:
+          - "Continue in English, the language of the last substantive question."
+          - "Advance exactly one coherent unit, such as extracting a convergent subsequence and using continuity."
+          - "Pause again."
+
+  - id: question-overrides-approval
+    should_trigger: true
+    history:
+      - role: user
+        content: "固有値と固有ベクトルから対角化を理解したい。"
+      - role: assistant
+        content: "The response introduced invariant one-dimensional directions and paused before discussing bases."
+    turns:
+      - user: "OK。でも、固有ベクトルがゼロベクトルではいけないのはなぜ？"
+        expected:
+          - "Answer the zero-vector question in Japanese."
+          - "Do not advance to eigenbases or the diagonalization criterion."
+          - "Pause for another explicit approval."
+
+  - id: change-representation-after-confusion
+    should_trigger: true
+    history:
+      - role: user
+        content: "商群の意味を理解したい。"
+      - role: assistant
+        content: "The response explained quotient groups abstractly through cosets and paused."
+    turns:
+      - user: "よくわからない。同じ説明をもう一度するのではなく、具体例で見たい。"
+        expected:
+          - "Use a concrete example such as integers modulo n to rebuild the same unit."
+          - "Relate the example back to cosets without advancing to the quotient universal property."
+          - "Pause again in Japanese."
+
+  - id: correction-repairs-state
+    should_trigger: true
+    history:
+      - role: user
+        content: "一様連続性とLipschitz連続性の関係を整理したい。"
+      - role: assistant
+        content: "Lipschitz continuous functions are uniformly continuous, and uniformly continuous functions are Lipschitz continuous. We will use this equivalence below."
+    turns:
+      - user: "後半は違いませんか。たとえば平方根はどうでしょう。"
+        expected:
+          - "Recheck and acknowledge that the converse is false."
+          - "Use the square-root example on a suitable domain to explain the failure."
+          - "Identify that the claimed equivalence and any route depending on it must be replaced."
+          - "Wait for approval instead of continuing."
+        forbidden:
+          - "Preserve the false converse in a later recap."
+          - "Accept the correction without mathematical verification."
+
+  - id: source-based-contraction-theorem
+    should_trigger: true
+    source:
+      type: local-fixture
+      path: "fixtures/contraction-mapping.tex"
+    turns:
+      - user: "I know metric spaces but not fixed-point theory. Use this source to help me understand Theorem 1 interactively."
+        expected:
+          - "Resolve Theorem 1 to the contraction mapping theorem with TeX label th:contraction."
+          - "Preserve completeness and the strict contraction constant as material hypotheses."
+          - "Explain one starting unit rather than the entire proof."
+          - "Use only verified source pointers and distinguish source content from interpretation."
+
+  - id: language-switch
+    should_trigger: true
+    history:
+      - role: user
+        content: "圏論の随伴を対話的に理解したい。"
+      - role: assistant
+        content: "The response explained the motivating correspondence in Japanese and paused."
+    turns:
+      - user: "Could you answer my next question in English? Why is naturality essential here?"
+        expected:
+          - "Answer in English."
+          - "Address naturality without advancing the main route."
+          - "Use English for the checkpoint prompt."
+
+  - id: self-contained-chat-summary
+    should_trigger: true
+    history:
+      - role: user
+        content: "陰関数定理を日本語で理解したい。"
+      - role: assistant
+        content: "Several paced units established the local graph picture, the invertible partial derivative, and the linear correction mechanism. A notation error was later corrected from D_x F to D_y F."
+      - role: user
+        content: "OK"
+      - role: assistant
+        content: "The response completed the proof architecture and paused at a milestone."
+    turns:
+      - user: "ここまでを後から単独で読めるようにまとめて。"
+        expected:
+          - "Write a self-contained Japanese mathematical note rather than a transcript."
+          - "Use the corrected derivative D_y F consistently."
+          - "Include prerequisites, the conceptual mechanism, essential formulas, and the completed versus remaining scope where applicable."
+          - "Use rendered mathematics rather than raw TeX code fences."
+
+  - id: english-tex-pdf-from-japanese-dialogue
+    should_trigger: true
+    history:
+      - role: user
+        content: "測度論の収束定理を日本語で対話的に学びたい。"
+      - role: assistant
+        content: "The dialogue reached a coherent milestone covering Fatou's lemma and the dominated convergence theorem."
+    turns:
+      - user: "ここまでをPDFにして。"
+        expected:
+          - "Keep any chat explanation in Japanese."
+          - "Create English TeX prose and an English PDF using the bundled template."
+          - "Preserve formulas and proper theorem names accurately."
+          - "Render and inspect every PDF page before delivery."
+        forbidden:
+          - "Write Japanese prose in the TeX or PDF."
+          - "Claim success without a compiled and inspected PDF."
+
+  - id: negative-routine-calculation
+    should_trigger: false
+    prompt: "Differentiate x^3 sin(x) and give only the answer."
+
+  - id: negative-one-sentence-definition
+    should_trigger: false
+    prompt: "Define a Noetherian ring in one sentence."
+
+  - id: negative-one-shot-paper-summary
+    should_trigger: false
+    prompt: "Summarize this paper section by section in one response."
+
+  - id: negative-formal-proof-check
+    should_trigger: false
+    prompt: "Verify every inference in this Lean proof and fix the code."

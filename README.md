@@ -2,6 +2,31 @@
 
 Reusable Codex skills for mathematical research workflows.
 
+## Learn Math Interactively
+
+`$learn-math-interactively` develops a serious understanding of a mathematical definition, theorem, proof, or theory through a paced dialogue. It explains one coherent conceptual unit, stops at a natural boundary, and waits for the user's question or explicit approval before continuing.
+
+The skill supports direct mathematical questions as well as passages identified in PDFs, arXiv papers, TeX sources, and textbooks. It infers the user's background from the conversation instead of starting with a questionnaire, and revises both the explanation level and route when later questions expose missing prerequisites or misconceptions.
+
+Invoke it explicitly when you want an interactive explanation:
+
+```text
+Use $learn-math-interactively to help me understand the implicit function theorem deeply. Pause at natural points so I can ask questions.
+```
+
+```text
+$learn-math-interactively を使って、この論文の Theorem 2.3 を前提から対話的に理解したい。
+```
+
+At each pause:
+
+- `OK`, `わかった`, `continue`, or an equivalent approval advances by one conceptual unit.
+- A question is answered without advancing the main route; the skill then waits again.
+- `まとめて` or an equivalent request produces a self-contained chat note in the language of that request.
+- `PDFにして` or an equivalent request produces an English TeX source and PDF, regardless of the dialogue language. PDF export is never automatic.
+
+Dialogue responses follow the language of the user message being answered. If the user switches languages, the skill switches with them. Chat summaries use the user's current language, while TeX and PDF prose is always English.
+
 ## Explain Math Proof Idea
 
 `$explain-math-proof-idea` explains the decisive idea in the proof of one theorem, proposition, lemma, or corollary from a mathematical research paper. It is designed to sound like a focused five-to-ten-minute explanation from the author to another specialist.
@@ -18,7 +43,7 @@ It does not perform whole-paper summaries, full formal proof verification, LaTeX
 
 ## Use
 
-Open this repository in Codex. The repository-scoped skill under `.agents/skills` is discovered automatically.
+Open this repository in Codex. The repository-scoped skills under `.agents/skills` are discovered automatically.
 
 Invoke it explicitly when desired:
 
@@ -36,13 +61,16 @@ For personal installation after this repository is published, ask `$skill-instal
 
 ### Local development installation
 
-During local development, keep this repository as the source of truth and expose the skill globally with a symbolic link rather than copying it. From the repository root, run:
+During local development, keep this repository as the source of truth and expose either or both skills globally with symbolic links rather than copying them. From the repository root, run:
 
 ```bash
 mkdir -p "$HOME/.agents/skills"
 ln -s \
   "$PWD/.agents/skills/explain-math-proof-idea" \
   "$HOME/.agents/skills/explain-math-proof-idea"
+ln -s \
+  "$PWD/.agents/skills/learn-math-interactively" \
+  "$HOME/.agents/skills/learn-math-interactively"
 ```
 
 The global entry is a symbolic link, not a second copy. Changes made in this repository are therefore visible through the global skill path. Verify the link and inspect its target with:
@@ -50,6 +78,8 @@ The global entry is a symbolic link, not a second copy. Changes made in this rep
 ```bash
 ls -l "$HOME/.agents/skills/explain-math-proof-idea"
 readlink "$HOME/.agents/skills/explain-math-proof-idea"
+ls -l "$HOME/.agents/skills/learn-math-interactively"
+readlink "$HOME/.agents/skills/learn-math-interactively"
 ```
 
 If the destination already exists, `ln` exits with an error instead of overwriting it.
@@ -62,9 +92,9 @@ Papers and TeX sources used for evaluation are downloaded temporarily and are no
 
 ## Evaluate
 
-Evaluation cases and the scoring rubric are in [`evals/explain-math-proof-idea`](evals/explain-math-proof-idea). The suite covers explicit theorem selection, semantic main-theorem selection, multiple main results, externally delegated proofs, source-version mismatches, language selection, and negative trigger cases.
+Evaluation cases and scoring rubrics are in [`evals/explain-math-proof-idea`](evals/explain-math-proof-idea) and [`evals/learn-math-interactively`](evals/learn-math-interactively). The interactive suite covers pacing, question-first behavior, level and language adaptation, corrections, source fidelity, chat-note synthesis, English TeX/PDF export, and negative trigger cases.
 
-Validate the skill structure with the `quick_validate.py` script bundled with OpenAI's `skill-creator`, passing `.agents/skills/explain-math-proof-idea` as the skill path.
+Validate each skill structure with the `quick_validate.py` script bundled with OpenAI's `skill-creator`, passing the relevant directory under `.agents/skills` as the skill path.
 
 ## Known limitations
 
@@ -75,7 +105,7 @@ Validate the skill structure with the `quick_validate.py` script bundled with Op
 
 ## Contributing
 
-Keep each change tied to a reproducible prompt. Update `SKILL.md`, add or revise a case under `evals/explain-math-proof-idea`, run structural validation, and forward-test the changed behavior on raw source material. Do not commit downloaded papers or copied TeX sources; use public identifiers or minimal synthetic fixtures.
+Keep each change tied to a reproducible prompt. Update the relevant `SKILL.md`, add or revise a case under the matching `evals/<skill-name>` directory, run structural validation, and forward-test the changed behavior on raw source material. Do not commit downloaded papers or copied TeX sources; use public identifiers or minimal synthetic fixtures.
 
 ## License
 
