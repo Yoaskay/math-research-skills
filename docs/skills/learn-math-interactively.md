@@ -13,8 +13,10 @@ The skill infers the user's background from the conversation instead of starting
 Invoke the skill explicitly when desired:
 
 ```text
-Use $learn-math-interactively to help me understand the implicit function theorem deeply. Pause at natural points so I can ask questions.
+Use $learn-math-interactively to help me understand the implicit function theorem deeply.
 ```
+
+You do not need to specify the pacing or ask the skill to pause; it does that automatically. You can also invoke `$learn-math-interactively` without a full prompt and provide the topic when asked, but naming the topic up front lets the lesson begin immediately.
 
 At each pause:
 
