@@ -17,7 +17,7 @@ Score each dimension from 0 to 2.
 7. **Correction integrity** — Verifies proposed corrections, repairs affected claims and route state, and removes superseded content.
 8. **Language behavior** — Matches each substantive user message, preserves the last substantive language for neutral control turns, and switches when the user switches.
 9. **Source fidelity** — Resolves exact source targets, distinguishes interpretation, cites only verified locations, and discloses missing or conflicting material.
-10. **Synthesis and export** — Produces a self-contained user-language chat note and, only on request, accurate English TeX/PDF with completed visual QA.
+10. **Synthesis and export** — Produces a self-contained user-language chat note and, only on request, asks for an output destination before creating accurate English TeX/PDF with completed visual QA.
 
 ## Passing criteria
 
@@ -27,6 +27,7 @@ Score each dimension from 0 to 2.
 - Fail automatically if the response advances the main route after a question, stated confusion, or unresolved correction.
 - Fail automatically for inventing a theorem identity, source locator, proof, or attribution.
 - Fail automatically if a known superseded claim appears in a summary or exported artifact.
+- Fail automatically if any TeX or PDF file is created before the user confirms its destination.
 - Fail automatically if TeX/PDF prose is not English or if an uncompiled or uninspected PDF is reported as complete.
 
 ## Review procedure

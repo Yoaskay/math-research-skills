@@ -137,6 +137,14 @@ cases:
       - user: "ここまでをPDFにして。"
         expected:
           - "Keep any chat explanation in Japanese."
+          - "Ask where to save the TeX and PDF, recommend the workspace output/pdf directory, and allow a custom path."
+          - "Wait for the destination answer without creating or compiling any file."
+        forbidden:
+          - "Choose a destination silently."
+          - "Create a TeX or PDF before the user confirms a destination."
+      - user: "/tmp/interactive-math-notes に保存して。"
+        expected:
+          - "Resolve and briefly confirm the absolute destination."
           - "Create English TeX prose and an English PDF using the bundled template."
           - "Preserve formulas and proper theorem names accurately."
           - "Render and inspect every PDF page before delivery."

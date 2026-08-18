@@ -111,7 +111,17 @@ For an intermediate summary, label the completed scope and the remaining scope e
 
 Export files only when the user explicitly requests TeX, PDF, or both. Regardless of the dialogue language, write all TeX prose, headings, captions, labels, and notes in English. Preserve mathematical notation, proper names, and source titles accurately.
 
-Use `assets/math-note-template.tex` as the starting point. Replace every placeholder and remove unused sections. Write the final `.tex` and `.pdf` to `output/pdf/<descriptive-slug>.tex` and `output/pdf/<descriptive-slug>.pdf` unless the user specifies another destination.
+If the user already specified a destination directory, use it. Otherwise, ask where to save the `.tex` and `.pdf` before creating, copying, or compiling any file, and wait for the answer. Do not treat the current directory as implicit consent.
+
+Prefer a structured choice prompt when one is available. Offer:
+
+- the current workspace's `output/pdf/` directory as the recommended choice;
+- the current working directory as a second choice;
+- a free-form custom directory through the prompt's custom or other response.
+
+When structured choices are unavailable, ask one concise question, name the recommended absolute directory, and invite the user to provide a different path. If no workspace root is available, recommend `<current-working-directory>/output/pdf/`. Ask a follow-up only when a custom response does not contain a usable path or when the selected destination is not writable.
+
+After the user chooses, resolve the destination to an absolute directory and state it briefly. Use `assets/math-note-template.tex` as the starting point, replace every placeholder, and remove unused sections. Write `<descriptive-slug>.tex` and `<descriptive-slug>.pdf` together in the confirmed directory.
 
 Compile with LuaLaTeX through `latexmk` when available. Follow any available PDF-creation workflow and its artifact rules. Render every final page to images and inspect legibility, formulas, spacing, page breaks, headings, hyperlinks, and clipping before delivery. Recompile and reinspect after any correction.
 

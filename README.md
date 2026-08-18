@@ -14,16 +14,12 @@ Invoke it explicitly when you want an interactive explanation:
 Use $learn-math-interactively to help me understand the implicit function theorem deeply. Pause at natural points so I can ask questions.
 ```
 
-```text
-$learn-math-interactively を使って、この論文の Theorem 2.3 を前提から対話的に理解したい。
-```
-
 At each pause:
 
-- `OK`, `わかった`, `continue`, or an equivalent approval advances by one conceptual unit.
+- `OK`, `understood`, `continue`, or an equivalent approval advances by one conceptual unit.
 - A question is answered without advancing the main route; the skill then waits again.
-- `まとめて` or an equivalent request produces a self-contained chat note in the language of that request.
-- `PDFにして` or an equivalent request produces an English TeX source and PDF, regardless of the dialogue language. PDF export is never automatic.
+- A summary request produces a self-contained chat note in the language of that request.
+- A TeX or PDF request pauses to ask where the files should be saved. After the user chooses a destination, the skill produces English TeX and PDF prose regardless of the dialogue language. Export is never automatic.
 
 Dialogue responses follow the language of the user message being answered. If the user switches languages, the skill switches with them. Chat summaries use the user's current language, while TeX and PDF prose is always English.
 
@@ -52,7 +48,7 @@ Use $explain-math-proof-idea to explain the core proof idea of Theorem 2.3 in th
 ```
 
 ```text
-この論文の主定理の証明のコアアイデアを説明してください。
+Explain the core proof idea of the main theorem in this paper.
 ```
 
 When several results are genuinely co-primary, the skill lists the candidates and asks you to select one before explaining a proof.
