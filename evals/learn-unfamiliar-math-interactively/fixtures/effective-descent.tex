@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+\begin{document}
+
+\section{Effective descent}
+
+Let $\mathcal{C}$ be a category fibered in groupoids on a site $(\mathcal{S},\tau)$.
+For a covering family $\{U_i\to X\}$, a descent datum consists of objects
+$E_i\in\mathcal{C}(U_i)$ and isomorphisms between their pullbacks to
+$U_i\times_X U_j$ satisfying the cocycle condition on triple fiber products.
+It is effective if it is induced by an object of $\mathcal{C}(X)$.
+
+\begin{definition}
+The fibered category $\mathcal{C}$ is a stack for $\tau$ if descent data for every
+$\tau$-covering family are effective and morphisms satisfy descent.
+\end{definition}
+
+\begin{theorem}[Effective descent]\label{th:effective-descent}
+If $\mathcal{C}$ is a stack for $\tau$, then for every $\tau$-cover
+$\{U_i\to X\}$ the restriction functor
+\[
+  \mathcal{C}(X)\longrightarrow
+  \operatorname{Desc}_{\mathcal{C}}(\{U_i\to X\})
+\]
+is an equivalence of categories.
+\end{theorem}
+
+The theorem is used by constructing objects on a cover, checking the pairwise
+compatibilities and cocycle condition, and then descending them to the base.
+The proof is immediate from the stack axiom and is not expanded here.
+
+\end{document}

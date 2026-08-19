@@ -1,0 +1,64 @@
+% Compile with: latexmk -lualatex <filename>.tex
+% Replace all @@...@@ placeholders and remove unused sections before delivery.
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=30mm]{geometry}
+\usepackage{amsmath,amssymb,mathtools,amsthm}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\allowdisplaybreaks[2]
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.65em}
+\setlist{nosep,leftmargin=2em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\id}{id}
+
+\title{@@TITLE@@}
+\author{@@AUTHOR_OR_CONTEXT@@}
+\date{@@DATE@@}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+@@SELF_CONTAINED_OVERVIEW@@
+\end{abstract}
+
+\section{Scope and prerequisites}
+@@SCOPE_AND_PREREQUISITES@@
+
+\section{Main ideas}
+@@CONCEPTUAL_NARRATIVE@@
+
+\section{Mathematical details}
+@@DEFINITIONS_FORMULAS_EXAMPLES_OR_PROOF@@
+
+\section{Key cautions}
+@@CORRECTIONS_OR_COMMON_CONFUSIONS@@
+
+\section{Further directions}
+@@REMAINING_SCOPE_OR_NEXT_STEPS@@
+
+\section*{Source pointers}
+@@VERIFIED_SOURCES_OR_STATE_NONE@@
+
+\end{document}

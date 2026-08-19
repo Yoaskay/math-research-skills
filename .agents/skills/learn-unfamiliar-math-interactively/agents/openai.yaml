@@ -1,0 +1,4 @@
+interface:
+  display_name: "Learn Unfamiliar Math Interactively"
+  short_description: "Build a usable map of unfamiliar mathematics"
+  default_prompt: "Use $learn-unfamiliar-math-interactively to help me build a usable big-picture understanding of this unfamiliar mathematical topic."

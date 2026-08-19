@@ -1,0 +1,196 @@
+version: 1
+skill: learn-unfamiliar-math-interactively
+
+interaction_contract:
+  assistant_turns_are_evaluated_in_sequence: true
+  opening_turn_supplies_a_selective_map: true
+  approval_is_provisional_not_mastery: true
+  questions_and_repairs_block_progress: true
+
+cases:
+  - id: outsider-opening-map-and-proactive-terms
+    should_trigger: true
+    turns:
+      - user: "私は微分幾何は知っていますが代数幾何の知識はありません。エタールコホモロジーが何をする理論で、論文ではどう使われるのかを対話的に理解したい。"
+        expected:
+          - "Answer in Japanese and assume mathematical maturity without assuming algebraic-geometric vocabulary."
+          - "Give a selective map: the motivating problem, the role of cohomology, the rough input-output interface, essential ideas, technical black boxes, and a short route."
+          - "Proactively unpack load-bearing specialist notions such as an étale map and a site before relying on them."
+          - "For each such notion, give its present role and a minimal intuition or example rather than only a parenthetical synonym."
+          - "Explain any specialist term or symbol that carries a displayed formula or example; otherwise choose a simpler example or postpone the term."
+          - "Pause after an orientation-sized unit rather than giving a comprehensive construction or proof."
+        forbidden:
+          - "Ask the user to list every algebraic-geometry concept they know before beginning."
+          - "Use schemes, sites, sheaves, stalks, and derived functors as an unexplained chain of jargon."
+          - "Use Galois actions, Frobenius, Tate twists, or l-adic coefficients as the explanatory core of an example without unpacking their roles."
+          - "Attempt to construct étale cohomology in full technical detail."
+
+  - id: explain-load-bearing-concept-before-use
+    should_trigger: true
+    turns:
+      - user: "解析は知っていますがD加群は全く知りません。正則ホロノミックD加群と局所系の対応が何を言っているか知りたい。"
+        expected:
+          - "Explain what a D-module is meant to encode before using holonomicity to describe the correspondence."
+          - "Give an operational picture of regularity and holonomicity, including what each condition controls, while marking their precise definitions as deferrable if not yet needed."
+          - "Connect the correspondence to a familiar differential-equation or flat-connection picture."
+          - "Distinguish the conceptual correspondence from technical machinery needed to prove it."
+        forbidden:
+          - "Wait for the user to ask what a D-module or holonomic means."
+          - "Define one specialist term entirely through other unexplained specialist terms."
+
+  - id: preserve-demonstrated-background
+    should_trigger: true
+    turns:
+      - user: "測度論と関数解析は知っています。確率論は専門外です。マルチンゲール収束定理を使える程度に理解したい。"
+        expected:
+          - "Use measure-theoretic language without re-teaching sigma-algebras or conditional expectation from first principles unless a field-specific role needs clarification."
+          - "Proactively explain genuinely probabilistic load-bearing ideas such as filtration and adaptedness."
+          - "Organize the theorem around hypotheses, conclusions, representative applications, and limitations."
+        forbidden:
+          - "Treat the user as a mathematical beginner."
+
+  - id: provisional-ok-advances-broadly
+    should_trigger: true
+    history:
+      - role: user
+        content: "I know algebraic topology but no higher category theory. Help me get a working picture of spectra and stable homotopy theory."
+      - role: assistant
+        content: "The response gave an opening map, proactively explained stabilization and spectra at an operational level, separated essential ideas from model-category machinery, and paused."
+    turns:
+      - user: "OK"
+        expected:
+          - "Treat OK as permission to continue, not proof that the user mastered spectra."
+          - "Advance one broad milestone that combines a small concept cluster with a representative example or use."
+          - "Retain English and pause again at a natural boundary."
+        forbidden:
+          - "Congratulate the user for mastering the previous material."
+          - "Advance by only one tiny definition with no change to the overall picture."
+
+  - id: rewind-after-too-many-oks
+    should_trigger: true
+    history:
+      - role: user
+        content: "圏論は少し知っていますが導来圏は知りません。導来関手が論文で何をしているのか理解したい。"
+      - role: assistant
+        content: "The dialogue gave a map, then broad milestones on complexes, quasi-isomorphisms, localization, and derived functors. The user answered OK to each."
+    turns:
+      - user: "やっぱり適当にOKと言いすぎました。なぜ準同型を逆にする話が導来関手につながるのか分からなくなっています。"
+        expected:
+          - "Do not restart from chain complexes automatically."
+          - "Locate the missing bridge at localization by quasi-isomorphisms and reconstruct that bridge with a different representation or canonical example."
+          - "Explain how replacing an object by a resolution becomes invariant only after quasi-isomorphisms are treated as equivalences."
+          - "Update the route implicitly and pause before resuming later milestones."
+        forbidden:
+          - "Blame the user for approving too quickly."
+          - "Continue to spectral sequences while the gap remains."
+
+  - id: question-overrides-approval
+    should_trigger: true
+    history:
+      - role: user
+        content: "表現論は専門外です。Langlands対応の全体像を知りたい。"
+      - role: assistant
+        content: "The response introduced the two sides of the correspondence, explained representations and Galois data minimally, and paused."
+    turns:
+      - user: "OK。ただ、自動形式がなぜ表現になるのかはまだ分かりません。"
+        expected:
+          - "Address only the relation between automorphic forms and representations in Japanese."
+          - "Unpack any new specialist terminology needed for that relation."
+          - "Do not advance to functoriality or the trace formula."
+          - "Pause again."
+
+  - id: relative-essential-technical-classification
+    should_trigger: true
+    turns:
+      - user: "偏微分方程式は専門外です。Atiyah-Singer指数定理をトポロジーの問題に使う観点から理解したい。"
+        expected:
+          - "Classify ellipticity and the analytic/topological index comparison as essential or needed for use."
+          - "Treat parametrix construction and analytic estimates as technical for this stated goal, while explaining what work they perform."
+          - "State that the classification is relative to the application goal rather than an absolute judgment of importance."
+          - "Give a representative input-output example."
+
+  - id: source-based-effective-descent
+    should_trigger: true
+    source:
+      type: local-fixture
+      path: "fixtures/effective-descent.tex"
+    turns:
+      - user: "I know ordinary categories but not sheaf or stack theory. Use this note to help me understand Theorem 1 well enough to recognize when it can be used."
+        expected:
+          - "Resolve Theorem 1 to label th:effective-descent and preserve the stack hypothesis and equivalence conclusion."
+          - "Proactively explain cover, descent datum, effectiveness, and stack at the minimum operational level before relying on them."
+          - "Separate the source statement from the interpretation that local compatible objects glue uniquely up to isomorphism."
+          - "Explain inputs, what must be checked, output, and a representative use without attempting a full proof."
+          - "Identify the verified section and TeX label th:effective-descent, and cite no unverified location."
+
+  - id: language-switch
+    should_trigger: true
+    history:
+      - role: user
+        content: "数論は専門外です。保型表現の役割を日本語で概観したい。"
+      - role: assistant
+        content: "The response gave an outsider-facing map in Japanese and paused."
+    turns:
+      - user: "Could you continue in English and explain what the local-global distinction is doing here?"
+        expected:
+          - "Answer in English."
+          - "Explain the specialist local-global language proactively and tie it to the existing map."
+          - "Address this issue without advancing beyond the current milestone."
+
+  - id: self-contained-summary
+    should_trigger: true
+    history:
+      - role: user
+        content: "シンプレクティック幾何は専門外です。Floer homologyの使い方が分かる見取り図がほしい。"
+      - role: assistant
+        content: "Several broad milestones established the variational picture, generators and differential, invariance, typical applications, and technical black boxes. A sign-related overstatement was later corrected."
+    turns:
+      - user: "ここまでを単独で読めるノートにまとめて。"
+        expected:
+          - "Produce a self-contained Japanese note rather than a transcript."
+          - "Include proactively explained specialist prerequisites, the big-picture map, user-facing interface, examples, and explicitly identified black boxes."
+          - "Integrate the correction without preserving the superseded claim."
+
+  - id: english-tex-pdf-export
+    should_trigger: true
+    history:
+      - role: user
+        content: "作用素環は専門外です。von Neumann環の分類を日本語で概観したい。"
+      - role: assistant
+        content: "The dialogue reached a usable milestone and distinguished conceptual invariants from technical classification machinery."
+    turns:
+      - user: "ここまでをPDFにして。"
+        expected:
+          - "Keep chat text in Japanese."
+          - "Ask for the destination before creating any file, recommending workspace output/pdf and allowing a custom path."
+          - "Wait for the destination response."
+        forbidden:
+          - "Create TeX or PDF before destination confirmation."
+      - user: "/tmp/unfamiliar-math-notes に保存して。"
+        expected:
+          - "Resolve and state the absolute destination."
+          - "Create English TeX and PDF using the bundled template."
+          - "Render and inspect every page before delivery."
+        forbidden:
+          - "Use Japanese prose in the TeX or PDF."
+          - "Claim success without a compiled and inspected PDF."
+
+  - id: negative-deep-line-by-line-study
+    should_trigger: false
+    prompt: "I know the prerequisites. Help me understand every line of this proof deeply, including all technical estimates."
+
+  - id: negative-routine-calculation
+    should_trigger: false
+    prompt: "Compute the residue of 1/(z^2+1) at z=i and give only the answer."
+
+  - id: negative-one-sentence-definition
+    should_trigger: false
+    prompt: "Define an étale morphism in one sentence."
+
+  - id: negative-one-shot-summary
+    should_trigger: false
+    prompt: "Summarize this entire textbook chapter in one response."
+
+  - id: negative-formal-proof-verification
+    should_trigger: false
+    prompt: "Verify every inference in this Lean proof and repair the code."
