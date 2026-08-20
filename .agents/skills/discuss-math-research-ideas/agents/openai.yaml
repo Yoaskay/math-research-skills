@@ -1,0 +1,4 @@
+interface:
+  display_name: "Discuss Math Research Ideas"
+  short_description: "Test and develop mathematical research ideas together"
+  default_prompt: "Use $discuss-math-research-ideas to discuss this mathematical research idea with me as a seminar collaborator."

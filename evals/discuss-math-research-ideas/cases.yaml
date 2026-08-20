@@ -1,0 +1,193 @@
+version: 1
+skill: discuss-math-research-ideas
+
+interaction_contract:
+  assistant_turns_are_evaluated_in_sequence: true
+  one_central_research_move_per_turn: true
+  objections_and_questions_block_mainline_progress: true
+  epistemic_status_must_be_explicit_when_material: true
+
+cases:
+  - id: false-conjecture-counterexample-japanese
+    should_trigger: true
+    turns:
+      - user: "無限次元Banach空間でも有界列は収束部分列を持つのではないかと思っています。研究上使いたいので、この主張を一緒に検討してほしい。"
+        expected:
+          - "Answer in Japanese without an intake questionnaire."
+          - "Give the standard basis in ell^2 as an explicit bounded sequence whose distinct terms stay distance square root of two apart."
+          - "Explain that failure of compactness of the closed unit ball is the mechanism."
+          - "Offer one natural repair, such as finite dimensionality or an appropriately stated weak-compactness version, then pause."
+        forbidden:
+          - "Start a proof attempt before checking elementary counterexamples."
+          - "List several unrelated functional-analysis directions after the decisive counterexample."
+
+  - id: known-result-short-proof
+    should_trigger: true
+    turns:
+      - user: "I need the following lemma for an argument: a continuous injection from a compact space into a Hausdorff space is an embedding. Is this correct, and is there a quick proof?"
+        expected:
+          - "Identify the statement as standard and correct with the stated hypotheses."
+          - "Give the short proof that closed subsets of the compact domain have compact, hence Hausdorff-closed, images."
+          - "Conclude that the map onto its image is a homeomorphism and stop at that result."
+        forbidden:
+          - "Perform a literature search when the short proof settles the user's need."
+          - "Expand into a general lecture on compactness."
+
+  - id: known-substantial-result-targeted-literature
+    should_trigger: true
+    turns:
+      - user: "有限生成線形群は有限商で元を分離できるのではないかと思いました。新しい補題として使えそうでしょうか。"
+        expected:
+          - "Recognize the proposed statement as the classical residual-finiteness theorem for finitely generated linear groups."
+          - "Explain briefly how reduction modulo suitable maximal ideals supplies finite quotients, while noting the hypotheses needed for the chosen formulation."
+          - "Verify exact attribution or bibliographic details before presenting them as facts."
+          - "Tell the user that the statement should be used as a known theorem rather than presented as a new lemma."
+        forbidden:
+          - "Invent an exact theorem number, page, or source from memory."
+          - "Attempt a long self-contained proof of all required commutative algebra."
+
+  - id: viable-conditional-spectral-sequence-step
+    should_trigger: true
+    turns:
+      - user: "あるスペクトル系列が E_2^{p,q}=0 for p+q>n を満たしています。収束先の H^k も k>n で消えるはずだと思うのですが、まだ強収束は確認していません。研究アイデアとしてどう見えますか。"
+        expected:
+          - "Say that the implication is viable but conditional on the convergence and filtration hypotheses."
+          - "Explain the immediate associated-graded argument: all terms on a total-degree diagonal vanish, so every graded piece of the abutment vanishes."
+          - "Identify convergence or exhaustiveness/separatedness as the next decisive check and pause."
+        forbidden:
+          - "Declare the vanishing theorem proved without resolving convergence."
+          - "Launch into a complete spectral-sequence convergence theory."
+
+  - id: material-ambiguity-asks-one-question
+    should_trigger: true
+    turns:
+      - user: "この作用素のスペクトルは摂動で連続に動くと思うので証明したい。"
+        expected:
+          - "Ask one focused question that distinguishes materially different settings, such as the operator class, topology of perturbation, and intended notion of spectral continuity."
+          - "Do not silently assume bounded self-adjoint operators with norm perturbations."
+        forbidden:
+          - "Ask a general background questionnaire."
+          - "Judge the claim true or false before its materially different meanings are resolved."
+
+  - id: objection-repairs-research-state
+    should_trigger: true
+    history:
+      - role: user
+        content: "ell^2 の標準基底には弱収束部分列もないので、弱位相でもコンパクト性は期待できないと思います。"
+      - role: assistant
+        content: "That is correct; the standard basis has no weakly convergent subsequence, so this route is closed."
+    turns:
+      - user: "でも e_n は 0 に弱収束しませんか。"
+        expected:
+          - "Recheck the claim and acknowledge that e_n converges weakly to zero in ell^2."
+          - "Show this from the coordinates of an arbitrary ell^2 vector."
+          - "Withdraw the claimed obstruction and identify the affected research route."
+          - "Wait for the user's response instead of continuing."
+        forbidden:
+          - "Preserve the false obstruction in the current research state."
+          - "Accept the correction without mathematical verification."
+
+  - id: question-overrides-approval
+    should_trigger: true
+    history:
+      - role: user
+        content: "有限群の表示からコホモロジーの消滅を予想しています。まず低次数を調べましょう。"
+      - role: assistant
+        content: "The response computed the degree-zero case and paused before degree one."
+    turns:
+      - user: "OK。ただ、さっき使った不変部分の同一視は自然ですか。"
+        expected:
+          - "Answer the naturality question in Japanese."
+          - "Do not advance to degree one."
+          - "Pause again after resolving the issue."
+
+  - id: language-switch
+    should_trigger: true
+    history:
+      - role: user
+        content: "この代数幾何の予想について日本語で相談したい。"
+      - role: assistant
+        content: "The response tested a boundary case in Japanese and paused."
+    turns:
+      - user: "Could we continue in English? I want to understand whether the smoothness hypothesis is actually used."
+        expected:
+          - "Answer in English."
+          - "Audit only the role of smoothness in the current argument."
+          - "Use English for the closing invitation."
+
+  - id: research-note-preserves-useful-failures
+    should_trigger: true
+    history:
+      - role: user
+        content: "ある不変量の加法性を予想していて、日本語で検討したい。"
+      - role: assistant
+        content: "The dialogue proved additivity for split extensions, found a nonsplit counterexample to unrestricted additivity, discarded a filtration argument because it assumed exactness, and identified a corrected inequality that remains plausible. An unrelated arithmetic typo was also corrected."
+    turns:
+      - user: "OK。ここまでを自分の研究ノートとして、単独で読める形にまとめて。"
+        expected:
+          - "Write a self-contained Japanese research note rather than a transcript."
+          - "Treat the summary request as controlling and do not advance the research despite the approval token."
+          - "Record the split-extension theorem, the decisive nonsplit counterexample, and the failed filtration route with its exactness failure."
+          - "State the corrected inequality as unresolved or provisional."
+          - "Omit the unrelated arithmetic typo and conversational details."
+        forbidden:
+          - "State unrestricted additivity as a fact."
+          - "Erase the mathematically informative failed approach."
+
+  - id: no-result-does-not-imply-open
+    should_trigger: true
+    history:
+      - role: user
+        content: "この組合せ論的恒等式は既知か調べてください。"
+      - role: assistant
+        content: "A targeted search found no exact match in the terminology used."
+    turns:
+      - user: "では未解決問題と考えてよいですか。"
+        expected:
+          - "Say that the failed targeted search is insufficient to establish novelty or open status."
+          - "Separate what was searched from what remains unverified."
+          - "Suggest one most informative next search or expert check."
+        forbidden:
+          - "Declare the identity new or open from absence of a search hit."
+
+  - id: english-tex-pdf-from-japanese-research-dialogue
+    should_trigger: true
+    history:
+      - role: user
+        content: "日本語で研究アイデアを検討し、反例と修正版まで得ました。"
+      - role: assistant
+        content: "The dialogue reached a milestone with one proved special case, one failed approach, and two open questions."
+    turns:
+      - user: "ここまでをPDFの研究ノートにして。"
+        expected:
+          - "Keep the chat response in Japanese."
+          - "Ask where to save the TeX and PDF, recommend the workspace output/pdf directory, and allow a custom destination."
+          - "Wait without creating or compiling any file."
+        forbidden:
+          - "Choose a destination silently."
+          - "Create TeX or PDF before the destination is confirmed."
+      - user: "/tmp/research-idea-notes に保存して。"
+        expected:
+          - "Resolve and briefly confirm the absolute destination."
+          - "Create English TeX prose and an English PDF from the bundled research-note template."
+          - "Include the useful failed approach with its failure reason."
+          - "Render and inspect every PDF page before delivery."
+        forbidden:
+          - "Write Japanese prose in the TeX or PDF."
+          - "Claim success without a compiled and inspected PDF."
+
+  - id: negative-learn-established-math
+    should_trigger: false
+    prompt: "圏論の随伴を定義から一歩ずつ対話的に教えてください。"
+
+  - id: negative-routine-exercise
+    should_trigger: false
+    prompt: "Compute the eigenvalues of this 2 by 2 matrix and give only the answer."
+
+  - id: negative-one-shot-literature-survey
+    should_trigger: false
+    prompt: "Write a comprehensive one-shot literature survey on derived algebraic geometry."
+
+  - id: negative-formal-proof-check
+    should_trigger: false
+    prompt: "Verify every line of this Lean proof and repair all type errors."
