@@ -7,6 +7,7 @@ Reusable Codex skills for mathematical research workflows.
 | Skill | Description |
 | --- | --- |
 | [`$explain-math-proof-idea`](docs/skills/explain-math-proof-idea.md) | Explains the decisive idea in the proof of one result from a mathematical research paper. |
+| [`$discuss-math-research-ideas`](docs/skills/discuss-math-research-ideas.md) | Examines and develops mathematical research ideas through seminar-style dialogue. |
 | [`$learn-math-interactively`](docs/skills/learn-math-interactively.md) | Builds a serious understanding of mathematics through a paced, adaptive dialogue. |
 | [`$learn-unfamiliar-math-interactively`](docs/skills/learn-unfamiliar-math-interactively.md) | Builds a usable map of unfamiliar mathematics for researchers entering a new field. |
 
