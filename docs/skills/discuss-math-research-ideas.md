@@ -31,9 +31,9 @@ Literature searches are targeted rather than automatic. They are used when known
 
 Responses follow the language of the current user message and retain the latest substantive language for neutral control messages. The skill adapts its level to the mathematics demonstrated in the conversation.
 
-On request, it produces a self-contained research note rather than a transcript. The note records established results, counterexamples, useful failed approaches and their failure mechanisms, literature connections, promising directions, and unresolved questions while omitting conversational noise.
+On request, the skill summarizes the discussion directly in chat as a self-contained research note rather than a transcript. A chat note is written in the language of the summary request; if the request is language-neutral, it uses the language of the most recent substantive message. The note records established results, counterexamples, useful failed approaches and their failure mechanisms, literature connections, promising directions, and unresolved questions while omitting conversational noise.
 
-TeX and PDF export happens only when explicitly requested. If no destination was supplied, the skill asks where to save the files before creating them. Exported prose is always English, regardless of the dialogue language, and the PDF is compiled, rendered, and visually inspected before delivery.
+TeX and PDF export is a separate, explicitly requested operation. If no destination was supplied, the skill asks where to save the files before creating them. TeX and PDF prose is always written in English, regardless of the dialogue language, and the PDF is compiled, rendered, and visually inspected before delivery.
 
 ## Limitations
 
