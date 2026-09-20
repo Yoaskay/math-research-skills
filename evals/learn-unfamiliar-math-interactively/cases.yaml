@@ -4,6 +4,7 @@ skill: learn-unfamiliar-math-interactively
 interaction_contract:
   assistant_turns_are_evaluated_in_sequence: true
   opening_turn_supplies_a_selective_map: true
+  follow_up_turns_require_little_scrolling: true
   approval_is_provisional_not_mastery: true
   questions_and_repairs_block_progress: true
 
@@ -60,11 +61,13 @@ cases:
       - user: "OK"
         expected:
           - "Treat OK as permission to continue, not proof that the user mastered spectra."
-          - "Advance one broad milestone that combines a small concept cluster with a representative example or use."
+          - "Advance one meaningful takeaway within the current broad milestone, using a compact example or formula when useful; leave the rest for later turns if needed."
+          - "Aim for 180–300 English words and stay below 350, with a compact rendered layout and no repeated roadmap."
           - "Retain English and pause again at a natural boundary."
         forbidden:
           - "Congratulate the user for mastering the previous material."
           - "Advance by only one tiny definition with no change to the overall picture."
+          - "Finish a large milestone in one long response merely because the user said OK."
 
   - id: rewind-after-too-many-oks
     should_trigger: true
@@ -80,6 +83,7 @@ cases:
           - "Locate the missing bridge at localization by quasi-isomorphisms and reconstruct that bridge with a different representation or canonical example."
           - "Explain how replacing an object by a resolution becomes invariant only after quasi-isomorphisms are treated as equivalences."
           - "Update the route implicitly and pause before resuming later milestones."
+          - "Keep the repair around 400–700 Japanese characters and below 900; narrow it to the missing bridge rather than rebuilding the entire theory."
         forbidden:
           - "Blame the user for approving too quickly."
           - "Continue to spectral sequences while the gap remains."
@@ -96,6 +100,7 @@ cases:
         expected:
           - "Address only the relation between automorphic forms and representations in Japanese."
           - "Unpack any new specialist terminology needed for that relation."
+          - "Keep the answer around 400–700 Japanese characters and below 900, using a narrower explanation if the terminology would otherwise make it longer."
           - "Do not advance to functoriality or the trace formula."
           - "Pause again."
 

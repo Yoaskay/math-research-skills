@@ -28,7 +28,9 @@ Use $learn-unfamiliar-math-interactively to help me understand étale cohomology
 I am a differential geometer with no background in derived categories. Use $learn-unfamiliar-math-interactively to give me a usable picture of this section.
 ```
 
-The first teaching turn gives a selective map of the target and a short route through it. Later turns advance by broad milestones rather than pausing after every definition.
+The first teaching turn gives a selective map of the target and a short route through it. Later turns are short enough to read with only a little scrolling: typically 400–700 Japanese characters or 180–300 English words, normally below 900 characters or 350 words. Questions, corrections, and revisits follow the same budget. Broad milestones guide the route but can span several turns, each with one meaningful takeaway and a compact example or formula when useful.
+
+The skill limits visual height as well as text length and narrows the scope when unfamiliar terminology needs explanation. A longer response is reserved for an explicit request for more length, a self-contained synthesis, or an exported note; an ordinary `OK` does not lift the limit.
 
 ## Unfamiliar terminology
 
